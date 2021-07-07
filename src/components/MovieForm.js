@@ -1,31 +1,16 @@
 import React from 'react';
-import Loading from './Loading';
-import { getMovie, /* updateMovie */ } from '../services/movieAPI';
 import PropTypes from 'prop-types';
 
 class MovieForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      ...props.movie,
-      loading: true,
-    };
+    this.state = { ...props.movie };
     this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  async componentDidMount() {
-    const movie = await getMovie(1);
-    this.setLoading();
-    console.log(movie);
   }
 
   handleSubmit() {
     const { onSubmit } = this.props;
     onSubmit(this.state);
-  }
-
-  setLoading() {
-    this.setState({ loading: false });
   }
 
   updateMovie(field, newValue) {
@@ -163,34 +148,34 @@ class MovieForm extends React.Component {
   }
 
   render() {
-    const { /* movie, */ loading } = this.state;
-
-    return loading ? <Loading>Carregando...</Loading> : (
-      (
-        <div>
-          <form>
-            {this.renderTitleInput()}
-            {this.renderSubtitleInput()}
-            {this.renderImagePathInput()}
-            {this.renderStorylineInput()}
-            {this.renderGenreSelection()}
-            {this.renderRatingInput()}
-            {this.renderSubmitButton()}
-          </form>
-        </div>
-      )
+    return (
+      <div>
+        <form>
+          {this.renderTitleInput()}
+          {this.renderSubtitleInput()}
+          {this.renderImagePathInput()}
+          {this.renderStorylineInput()}
+          {this.renderGenreSelection()}
+          {this.renderRatingInput()}
+          {this.renderSubmitButton()}
+        </form>
+      </div>
     );
   }
 }
 
-// MovieForm.prototype = {
-//   movie: PropTypes.shape({
-//     id: PropTypes.number.isRequired,
-//     title: PropTypes.string.isRequired,
-//     imagePath: PropTypes.string.isRequired,
-//     storyline: PropTypes.string.isRequired,
-//   }).isRequired,
-//   onSubmit: PropTypes.func.isRequired,
-// };
+MovieForm.defaultProps = {
+  movie: {},
+};
+
+MovieForm.propTypes = {
+  movie: PropTypes.shape({
+    id: PropTypes.number,
+    title: PropTypes.string,
+    storyline: PropTypes.string,
+    imagePath: PropTypes.string,
+  }),
+  onSubmit: PropTypes.func.isRequired,
+};
 
 export default MovieForm;
