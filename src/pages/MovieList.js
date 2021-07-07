@@ -37,7 +37,7 @@ class MovieList extends Component {
         { loading ? <Loading>Carregando...</Loading> : (
           <section>
             <div>
-              <Link to="/movie/new">Adicionar Cartão</Link>
+              <Link to="/movies/new">ADICIONAR CARTÃO</Link>
             </div>
             { movies.map((movie) => <MovieCard key={ movie.title } movie={ movie } />) }
           </section>
