@@ -15,20 +15,17 @@ class MovieDetails extends Component {
     this.setMovie = this.setMovie.bind(this);
   }
 
-  componentDidMount() {
-    this.setMovie();
-  }
-
-  async setMovie() {
+  async componentDidMount() {
     const { match } = this.props;
     const { id } = match.params;
     const { getMovie } = movieAPI;
 
-    const currentMovie = await getMovie(id);
-    this.setState({
-      movie: currentMovie,
-      loading: false,
-    });
+    const movie = await getMovie(id);
+    this.setMovie(movie);
+  }
+
+  async setMovie(movie) {
+    this.setState({ movie, loading: false });
   }
 
   render() {
@@ -37,6 +34,8 @@ class MovieDetails extends Component {
     const { movie, loading } = this.state;
 
     const { title, storyline, imagePath, genre, rating, subtitle } = movie;
+
+    const { deleteMovie } = movieAPI;
 
     return (
       loading ? <Loading>Carregando...</Loading> : (
@@ -48,6 +47,7 @@ class MovieDetails extends Component {
           <p>{ `Genre: ${genre}` }</p>
           <p>{ `Rating: ${rating}` }</p>
           <Link to={ `${id}/edit` }>EDITAR</Link>
+          <Link to="/" onClick={ () => { deleteMovie(id); } }>DELETAR</Link>
           <Link to="/">VOLTAR</Link>
         </div>
       )
